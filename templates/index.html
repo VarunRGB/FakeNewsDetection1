@@ -1,35 +1,33 @@
 <!DOCTYPE html>
-<html >
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fake News📰 Detection System</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
+  <title>Fake News 📰 Detection System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
- <div class="login">
-	<h1>Fake News📰  Detector</h1>
+  <div class="container">
+    <h1 class="title">Fake News Detector</h1>
 
-    <form action="{{ url_for('predict')}}" method="POST">
-    	<textarea  name="message" rows="6" cols="50" required="required" style="font-size: 18pt"></textarea>
-		<br> </br>
-        <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+    <form action="{{ url_for('predict') }}" method="POST" class="form-box">
+      <textarea name="message" placeholder="Paste or type your news text here..." rows="6" required>{{ message if message else '' }}</textarea>
+      <button type="submit" class="btn-primary">Check News</button>
 
-        	<div class="results">
+      	<div class="result-box">
+			{% if prediction == ['FAKE'] %}
+				<h2 class="result fake">⚠️ This looks like <span>Fake News</span></h2>
+			{% elif prediction == ['REAL'] %}
+				<h2 class="result real">✅ This looks like <span>Real News</span></h2>
+			{% endif %}
 
-	{% if prediction == ['FAKE']%}
-	<h2 style="color:red;">Looking Spam⚠️News📰 </h2>
-	{% elif prediction == ['REAL']%}
-				<h2 style="color:green;"><b>Looking Real News📰</b></h2>
-	{% endif %}
-
-	</div>
+			{% if confidence %}
+				<p class="confidence">Confidence: {{ confidence }}%</p>
+			{% endif %}
+		</div>
 
     </form>
-
-</div>
+  </div>
+</body>
+</html>
